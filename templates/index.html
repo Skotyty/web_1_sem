@@ -1,139 +1,20 @@
+{% extends 'layouts/base.html' %}
+
 {% load static %}
-<!doctype html>
-<html lang="en" class="h-100">
-<head>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet">
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
+{% block content %}
 
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="{% static '/css/main.css' %}" rel="stylesheet">
-</head>
-<body class="d-flex flex-column h-100">
+    <h1>Questions</h1>
 
-<header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Fixed navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-</header>
+    {% for question in questions %}
+        {%  include 'components/question-item.html' %}
+    {% endfor %}
 
-
-<!-- Begin page content -->
-<main class="flex-shrink-0">
-    <div class="container">
-        <div class="row">
-            <div class="col-8">
-                <h1>Questions</h1>
-
-                <div class="row question">
-                    <div class="col-3">
-                        <img src="../static/img/cat_web.jpg" alt="" class="question-image">
-                    </div>
-                    <div class="col-9">
-                        <div class="question-title"><a href=""> First question.</a></div>
-
-                        <div class="question-text">
-Guys, there were a lot of emergency situations. And they shot at me, and I fell into a puddle and lay there, because one person [shot, and where he shot, who knows
-                        </div>
-                    </div>
-                </div>
-                <div class="row question">
-                    <div class="col-3">
-                        <img src="../static/img/cat_web.jpg" alt="" class="question-image">
-                    </div>
-                    <div class="col-9">
-                        <div class="question-title"><a href=""> Second question.</a></div>
-
-                        <div class="question-text">what to do if you shit yourself on the train?
-                        </div>
-                    </div>
-                </div>
-                <div class="row question">
-                    <div class="col-3">
-                        <img src="../static/img/cat_web.jpg" alt="" class="question-image">
-                    </div>
-                    <div class="col-9">
-                        <div class="question-title"><a href=""> Third question.</a></div>
-
-                        <div class="question-text">Is my grandfather a fool? the owl really has tits
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="row">
-                    <h2>Popular tags</h2>
-                    <div class="tags">
-                        <span class="badge bg-primary">Python</span>
-                        <span class="badge bg-secondary">CSS</span>
-                        <span class="badge bg-success">Sich</span>
-                        <span class="badge bg-dark">Django</span>
-                        <span class="badge bg-danger">Vk</span>
-                    </div>
-                    <br/>
-                    <h2>Best members</h2>
-                    <ul class="list-group" style="margin-left: 15px; max-width: 250px;">
-                        <li class="list-group-item"><a href=""></a>Mr.Freman</li>
-                        <li class="list-group-item"><a href=""></a>Volosh</li>
-                        <li class="list-group-item"><a href=""></a>Sich</li>
-                        <li class="list-group-item"><a href=""></a>Crazy Den</li>
-                        <li class="list-group-item"><a href=""></a>Big D</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
-<footer class="footer mt-auto py-3 bg-light">
-    <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-    </div>
-</footer>
-
-
-<script src="{% static '/js/bootstrap.js' %}">
-
-</script>
-
-
-</body>
-</html>
+<nav class="mt-3 d-flex justify-content-center">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+</nav>
+{% endblock %}
