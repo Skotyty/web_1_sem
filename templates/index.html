@@ -1,9 +1,10 @@
+{% load static %}
 <!doctype html>
 <html lang="en" class="h-100">
 <head>
 
     <!-- Bootstrap core CSS -->
-    <link href="../static/css/bootstrap.css" rel="stylesheet">
+    <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -20,7 +21,7 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="../static/css/main.css" rel="stylesheet">
+    <link href="{% static '/css/main.css' %}" rel="stylesheet">
 </head>
 <body class="d-flex flex-column h-100">
 
@@ -64,7 +65,7 @@
 
                 <div class="row question">
                     <div class="col-3">
-                        <img src="../static/img/cat.jpeg" alt="" class="question-image">
+                        <img src="../static/img/cat_web.jpg" alt="" class="question-image">
                     </div>
                     <div class="col-9">
                         <div class="question-title"><a href=""> First question.</a></div>
@@ -76,7 +77,7 @@ Guys, there were a lot of emergency situations. And they shot at me, and I fell 
                 </div>
                 <div class="row question">
                     <div class="col-3">
-                        <img src="../static/img/cat.jpeg" alt="" class="question-image">
+                        <img src="../static/img/cat_web.jpg" alt="" class="question-image">
                     </div>
                     <div class="col-9">
                         <div class="question-title"><a href=""> Second question.</a></div>
@@ -87,7 +88,7 @@ Guys, there were a lot of emergency situations. And they shot at me, and I fell 
                 </div>
                 <div class="row question">
                     <div class="col-3">
-                        <img src="../static/img/cat.jpeg" alt="" class="question-image">
+                        <img src="../static/img/cat_web.jpg" alt="" class="question-image">
                     </div>
                     <div class="col-9">
                         <div class="question-title"><a href=""> Third question.</a></div>
@@ -129,7 +130,9 @@ Guys, there were a lot of emergency situations. And they shot at me, and I fell 
 </footer>
 
 
-<script src="../static/js/bootstrap.js"></script>
+<script src="{% static '/js/bootstrap.js' %}">
+
+</script>
 
 
 </body>
