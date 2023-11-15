@@ -6,10 +6,9 @@
         <img src="{% static 'img/cat_web.jpg' %}" alt="" class="question-image">
     </div>
     <div class="col-9">
-        <div class="question-title"><a href=""> {{ question.title }}.</a></div>
-
-        <div class="question-text">
-            {{ question.content }}
+        <div class="question-title">
+            <a href="{% url 'question' question_id=question.id %}"> {{ question.title }}.</a>
         </div>
+        <div class="question-text">{{ question.content }}</div>
     </div>
 </div>

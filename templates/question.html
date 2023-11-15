@@ -2,19 +2,16 @@
 
 {% block content %}
 
-<h1>this is Questions razdel yra yra yra</h1>
+    <h1>this is Questions razdel yra yra yra</h1>
+    {% include 'components/question-item.html' %}
 
-{%  include 'components/question-item.html' %}
-<div class="row question">
-    <div class="col-3">
-        <img src="../static/img/cat_web.jpg" alt="" class="question-image">
-    </div>
-    <div class="col-9">
-        <div class="question-title"><a href=""> {{ question.title }}.</a></div>
-
-        <div class="question-text">
-            {{ question.content }}
+    <section class="answers mt-5">
+    <h2>Answers</h2>
+    <div class="row my-3">
+        <div class="col-12 border p-3">
+            <div><h3>First answer</h3></div>
+            <div>Super Answer 1</div>
         </div>
     </div>
-</div>
-
+    </section>
+{% endblock %}
