@@ -1,27 +1,35 @@
 main > .container {
-  padding: 60px 15px 0;
+    padding: 60px 15px 0;
 }
 
 .question {
-  border: 1px solid grey;
-  margin-top: 30px;
-  border-radius: 10px;
-  padding: 20px;
+    border: 1px solid grey;
+    margin-top: 30px;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 .question-image {
-  max-width: 150px;
-  max-height: 150px;
-
+    max-width: 150px;
+    max-height: 150px;
 }
 
 .question-title {
-  font-size: 30px;
-  font-family: Helvetica;
-  font-weight: bold;
+    font-size: 30px;
+    font-family: Helvetica;
+    font-weight: bold;
 }
 
-.tags{
-  max-width: 100px;
+.tags {
+    max-width: 100px;
 }
 
+.footer {
+    width: 100%;
+    background-color: #000000;
+    padding: 20px 0;
+}
+
+.error {
+    color: blue;
+}

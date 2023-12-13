@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <h1>Регистрация</h1>
+    <div class="error">Извините, почтый адрес уже существует</div>
+    <div>
+        <label for="Login">Логин:</label>
+        <input type="text" id="Login" name="login" placeholder="Введите ваш логин">
+    </div>
+    <div>
+        <label for="Email"> Пароль:</label>
+        <input type="text" id="Email" name="email" placeholder="dr.pepper@mail.ru">
+    </div>
+    <div>
+        <label for="NickName">Логин:</label>
+        <input type="text" id="NickName" name="nick_name" placeholder="Введите ваш логин">
+    </div>
+    <div>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" placeholder="Введите ваш пароль">
+    </div>
+    <div>
+        <label for="login">Логин:</label>
+        <input type="text" id="login" name="login" placeholder="Введите ваш логин">
+    </div>
+    <div>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" placeholder="Введите ваш пароль">
+    </div>
+    <div>
+        <input type="submit" value="Войти">
+    </div>
+
+    <a href>создать новый аккаунт</a>
+
+{% endblock %}
