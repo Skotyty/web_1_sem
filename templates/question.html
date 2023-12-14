@@ -1,17 +1,45 @@
 {% extends 'layouts/base.html' %}
-
+{% load static %}
 {% block content %}
 
-    <h1>this is Questions razdel yra yra yra</h1>
     {% include 'components/question-item.html' %}
 
     <section class="answers mt-5">
-    <h2>Answers</h2>
-    <div class="row my-3">
-        <div class="col-12 border p-3">
-            <div><h3>First answer</h3></div>
-            <div>Super Answer 1</div>
+        <h2>Answers</h2>
+        <div class="mb-3 row question">
+            <div class="col-3">
+                <img src="{% static 'img/cat_web.jpg' %}" alt="" class="question-image">
+            </div>
+            <div class="col-9">
+                <div class="question-title">
+                    <a href="{% url 'question' question_id=question.id %}"> {{ question.title }}.</a>
+                </div>
+                <div class="question-text">{{ question.content }}</div>
+            </div>
+            <div class="mt-3 row">
+                <div class="question-likes col-3">
+                    <h4><span class="badge bg-dark">{{ question.likes }}</span> Likes</h4>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Like</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm">Dislike</button>
+                </div>
+                <div class="form-check col-4">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Верный ответ
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div>
+        <textarea class="form-control answer-on-question" id="text" name="text"
+                  placeholder="Введите здесь свой ответ"></textarea>
+    </div>
+
+    <div class="mt-3 row">
+        <div class="col-sm-10">
+            <input type="submit" class="btn btn-primary" value="ответить">
         </div>
     </div>
-    </section>
 {% endblock %}

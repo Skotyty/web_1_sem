@@ -31,5 +31,23 @@ main > .container {
 }
 
 .error {
-    color: blue;
+    color: red;
 }
+
+.form-label {
+    width: 175px;
+    margin-right: 10px;
+}
+
+textarea.form-control {
+    width: 100%;
+    height: 250px;
+    resize: none;
+}
+
+textarea.answer-on-question {
+    width: 100%;
+    height: 150px;
+    resize: none;
+}
+

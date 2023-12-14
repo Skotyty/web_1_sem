@@ -3,21 +3,30 @@
 {% load static %}
 
 {% block content %}
+    
+    <div class="container mt-3">
+        <h1>Вход</h1>
 
-    <h1>Вход</h1>
-    <div class="error">Извините, неверный пароль!</div>
-        <div>
-            <label for="login">Логин:</label>
-            <input type="text" id="login" name="login" placeholder="Введите ваш логин">
+        <div class="error mb-3">Извините, неверный пароль!</div>
+
+        <div class="mb-3 row">
+            <label for="login" class="col-sm-2 col-form-label">Логин:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="login" name="login" placeholder="dr_pepper">
+            </div>
         </div>
-        <div>
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" placeholder="Введите ваш пароль">
+
+
+        <div class="mb-3 row">
+            <label for="password" class="col-sm-2 col-form-label">Пароль:</label>
+            <div class="col-sm-4">
+                <input type="password" class="form-control" id="password" name="password" placeholder="******">
+            </div>
         </div>
-    <div>
-        <input type="submit" value="Войти">
+
+        <div class="offset-sm-2 col-sm-4 mb-3">
+            <input type="submit" class="btn btn-primary" value="Войти">
+        </div>
+
     </div>
-
-    <a href>создать новый аккаунт</a>
-
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Новый вопрос</h1>
+        <div class="error mb-3">Нельзя задать вопрос без заголовка!</div>
+        <div class="mb-3 row">
+            <label for="title" class="col-sm-2 col-form-label">Заголовок:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" name="title"
+                       placeholder="Что делать, если в лужу упал, ребята?">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="text" class="col-sm-2 col-form-label">Текст:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="text" name="text"
+                          placeholder="Я реально не знаю, в меня ещё и стреляли :<"></textarea>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="tags" class="col-sm-2 col-form-label">Тэги:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="tags" name="tags" placeholder="Обэма, дети, лужа">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="offset-sm-2 col-sm-10">
+                <input type="submit" class="btn btn-primary" value="спросить">
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}
