@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 QUESTIONS = [
@@ -16,13 +16,17 @@ QUESTIONS = [
         'likes': 0,
         'tags': ['Elf', 'valli'],
         'answers_count': 0
-    } for i in range(2)
+    } for i in range(100)
 ]
 
-def paginate(objects, page, per_page=10):
-    paginator = Paginator(QUESTIONS, per_page)
-    return paginator.page(page)
-
+def paginate(objects, page, per_page=5):
+    paginator = Paginator(objects, per_page)
+    try:
+        return paginator.page(page)
+    except PageNotAnInteger:
+        return paginator.page(1)
+    except EmptyPage:
+        return paginator.page(paginator.num_pages)
 
 def index(request):
     page = request.GET.get('page', 1)

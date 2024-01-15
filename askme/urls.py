@@ -1,5 +1,5 @@
 """
-URL configuration for skoty project.
+URL configuration for askme project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -21,9 +21,9 @@ from app import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('question/<int:question_id>', views.question, name='question'),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('login/', views.login, name='login'),
-    path('signup/', views.signup),
-    path('settings/', views.settings),
-    path('ask/', views.ask),
+    path('signup/', views.signup, name='signup'),
+    path('settings/', views.settings, name='settings'),
+    path('ask/', views.ask, name='ask'),
 ]
