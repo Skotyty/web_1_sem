@@ -2,14 +2,20 @@
 
 {% load static %}
 
-{% block content %}
+{% block navbar %}
+    {% if user.is_authenticated %}
+        {% include 'components/reg-navbar.html' %}
+    {% else %}
+        {% include 'components/unreg-navbar.html' %}
+    {% endif %}
+{% endblock %}
 
+{% block content %}
     <h1 class="mt-2"> {{ p1 }} Новые вопросы</h1>
 
     {% for question in questions %}
-        {%  include 'components/question-item.html' %}
+        {% include 'components/question-item.html' %}
     {% endfor %}
     
     {% include 'components/paginator.html' %}
-
 {% endblock %}

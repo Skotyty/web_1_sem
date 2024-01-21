@@ -1,32 +1,40 @@
 {% extends 'layouts/base.html' %}
-
+{% load django_bootstrap5 %}
 {% load static %}
+{% block navbar %}
+    {% include 'components/unreg-navbar.html' %}
+{% endblock %}
 
 {% block content %}
-    
-    <div class="container mt-3">
-        <h1>Вход</h1>
 
-        <div class="error mb-3">Извините, неверный пароль!</div>
-
-        <div class="mb-3 row">
-            <label for="login" class="col-sm-2 col-form-label">Логин:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="login" name="login" placeholder="dr_pepper">
-            </div>
-        </div>
-
-
-        <div class="mb-3 row">
-            <label for="password" class="col-sm-2 col-form-label">Пароль:</label>
-            <div class="col-sm-4">
-                <input type="password" class="form-control" id="password" name="password" placeholder="******">
-            </div>
-        </div>
-
-        <div class="offset-sm-2 col-sm-4 mb-3">
-            <input type="submit" class="btn btn-primary" value="Войти">
-        </div>
-
-    </div>
+    <h1 class="mt-3 mb-3">Вход</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+    {#    <div class="container mt-3">#}
+    {#        <h1>Вход</h1>#}
+    {##}
+    {#        <div class="error mb-3">Извините, неверный пароль!</div>#}
+    {##}
+    {#        <div class="mb-3 row">#}
+    {#            <label for="login" class="col-sm-2 col-form-label">Логин:</label>#}
+    {#            <div class="col-sm-4">#}
+    {#                <input type="text" class="form-control" id="login" name="login" placeholder="dr_pepper">#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {##}
+    {#        <div class="mb-3 row">#}
+    {#            <label for="password" class="col-sm-2 col-form-label">Пароль:</label>#}
+    {#            <div class="col-sm-4">#}
+    {#                <input type="password" class="form-control" id="password" name="password" placeholder="******">#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#        <div class="offset-sm-2 col-sm-4 mb-3">#}
+    {#            <input type="submit" class="btn btn-primary" value="Войти">#}
+    {#        </div>#}
+    {#    </div>#}
 {% endblock %}

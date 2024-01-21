@@ -1,56 +1,70 @@
 {% extends 'layouts/base.html' %}
 
 {% load static %}
+{% load django_bootstrap5 %}
+{% block navbar %}
+    {% include 'components/reg-navbar.html' %}
+{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h1 class="mb-4">Настройки: Dr.Pepper</h1>
 
-            <div class="mb-3 row">
-                <label for="login" class="col-sm-2 col-form-label">Логин:</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="login" name="login" placeholder="dr_pepper">
-                </div>
+    <h1 class="mt-3 mb-3">Настройки</h1>
+    <form method="post" action="{% url 'settings' %}" class="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+    
+        {% if request.user.profile.avatar %}
+            <div class="avatar-container">
+                <img src="{{ request.user.profile.avatar.url }}" alt="Profile Avatar" class="profile-avatar"/>
             </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Сохранить настройки</button>
+    </form>
 
-            <div class="mb-3 row">
-                <label for="mail" class="col-sm-2 col-form-label">Почта:</label>
-                <div class="col-sm-4">
-                    <input type="email" class="form-control" id="mail" name="mail" placeholder="dr.pepper@mail.ru">
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="nick_name" class="col-sm-2 col-form-label">Ник:</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="nick_name" name="nick_name" placeholder="dr.pepper">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label for="avatar" class="col-sm-2 col-form-label">Загрузить аватар:</label>
-                <div class="col-sm-4">
-                    <img src="{% static 'img/cat_web.jpg' %}" alt="Аватар" class="question-image mb-2">
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <div class="offset-sm-2 col-sm-4">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="avatar" name="avatar" placeholder="c:\avatar.jpg">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">выбрать</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <div class="offset-sm-2 col-sm-10">
-                    <input type="submit" class="btn btn-primary" value="сохранить">
-                </div>
-            </div>
-
-    </div>
-
-
-
-
+    {#    <div class="container mt-5">#}
+    {#        <h1 class="mb-4">Настройки: Dr.Pepper</h1>#}
+    {##}
+    {#            <div class="mb-3 row">#}
+    {#                <label for="login" class="col-sm-2 col-form-label">Логин:</label>#}
+    {#                <div class="col-sm-4">#}
+    {#                    <input type="text" class="form-control" id="login" name="login" placeholder="dr_pepper">#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="mb-3 row">#}
+    {#                <label for="mail" class="col-sm-2 col-form-label">Почта:</label>#}
+    {#                <div class="col-sm-4">#}
+    {#                    <input type="email" class="form-control" id="mail" name="mail" placeholder="dr.pepper@mail.ru">#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="mb-3 row">#}
+    {#                <label for="nick_name" class="col-sm-2 col-form-label">Ник:</label>#}
+    {#                <div class="col-sm-4">#}
+    {#                    <input type="text" class="form-control" id="nick_name" name="nick_name" placeholder="dr.pepper">#}
+    {#                </div>#}
+    {#            </div>#}
+    {#            <div class="mb-3 row">#}
+    {#                <label for="avatar" class="col-sm-2 col-form-label">Загрузить аватар:</label>#}
+    {#                <div class="col-sm-4">#}
+    {#                    <img src="{% static 'img/cat_web.jpg' %}" alt="Аватар" class="question-image mb-2">#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="mb-3 row">#}
+    {#                <div class="offset-sm-2 col-sm-4">#}
+    {#                    <div class="input-group">#}
+    {#                        <input type="text" class="form-control" id="avatar" name="avatar" placeholder="c:\avatar.jpg">#}
+    {#                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">выбрать</button>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="mb-3 row">#}
+    {#                <div class="offset-sm-2 col-sm-10">#}
+    {#                    <input type="submit" class="btn btn-primary" value="сохранить">#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {#    </div>#}
 {% endblock %}

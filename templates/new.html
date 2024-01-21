@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block navbar %}
+{% include 'components/reg-navbar.html' %}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mt-4">Новые вопросы </h1>
+
+{% for question in page_obj %}
+{% include 'components/question-item.html' %}
+{% endfor %}
+
+{% include 'components/paginator.html' %}
+
+{% endblock %}

@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -76,19 +78,12 @@ WSGI_APPLICATION = 'askme.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-DATABASES = {
-    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_base',
-        'USER': 'postgres',
+        'NAME': 'skot',
+        'USER': 'skot',
         'PASSWORD': 'qwerty',
         'HOST': 'localhost',
-        'PORT': 5432, # Стандартный порт PostgreSQL
+        'PORT': 5432,  # Стандартный порт PostgreSQL
     }
 }
 

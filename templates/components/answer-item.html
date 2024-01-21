@@ -1,0 +1,26 @@
+{% load static %}
+
+<div class="card mb-3" id="answer-{{ answer.id }}">
+    <div class="row align-items-center g-0">
+        <div class="col-3 d-flex flex-column align-items-center">
+            <img src="{% static '/img/cat.jpeg' %}" class="question-image rounded-circle my-3"
+                 style="width: 100px; height: 100px; object-fit: cover;">
+            <div class="likes-dislikes mt-2">
+                <span class="badge bg-success mb-3 ">{{ answer.likes }}</span>
+                <span class="badge bg-danger mb-3">{{ answer.dislikes }}</span>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="card-body">
+                <p class="card-text">{{ answer.text }}</p>
+                {% if answer.correct %}
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="correctAnswer{{ answer.id }}" checked
+                               disabled>
+                        <label class="form-check-label" for="correctAnswer{{ answer.id }}">Правильный ответ!</label>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

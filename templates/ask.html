@@ -1,43 +1,77 @@
 {% extends 'layouts/base.html' %}
-
 {% load static %}
+{% block navbar %}
+    {% include 'components/reg-navbar.html' %}
+{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-            <h1 class="mb-4">Новый вопрос</h1>
-        <div class="error mb-3">Нельзя задать вопрос без заголовка!</div>
-        <div class="mb-3 row">
-            <label for="title" class="col-sm-2 col-form-label">Заголовок:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="title" name="title"
-                       placeholder="Что делать, если в лужу упал, ребята?">
-            </div>
+    <h1 class="mt-3 mb-3">Новый вопрос</h1>
+    <form method="post" action="{% url 'ask' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="titleInput" class="form-label">Заголовок</label>
+            <input class="form-control mb-3 {% if form.title.errors %}is-invalid{% endif %}" id="titleInput"
+                   name="title" placeholder="Что делать, если в лужу упал, ребята?"
+                   value="{{ form.title.value|default_if_none:'' }}">
+
+            {% for error in form.title.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+
+            <label for="textInput" class="form-label">Текст</label>
+            <textarea class="form-control mb-3 {% if form.text.errors %}is-invalid{% endif %}" id="textInput"
+                      name="text" rows="3"
+                      placeholder="Я реально не знаю, в меня ещё и стреляли :<">{{ form.text.value|default_if_none:'' }}</textarea>
+
+            {% for error in form.text.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+
+            <label for="tagsInput" class="form-label">Теги</label>
+            <input class="form-control {% if form.tags.errors %}is-invalid{% endif %}" id="tagsInput" name="tags"
+                   placeholder="обэма, дети" value="{{ form.tags.value|default_if_none:'' }}">
+
+            {% for error in form.tags.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
         </div>
-
-        <div class="mb-3 row">
-            <label for="text" class="col-sm-2 col-form-label">Текст:</label>
-            <div class="col-sm-10">
-                <textarea class="form-control" id="text" name="text"
-                          placeholder="Я реально не знаю, в меня ещё и стреляли :<"></textarea>
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <label for="tags" class="col-sm-2 col-form-label">Тэги:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="tags" name="tags" placeholder="Обэма, дети, лужа">
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <div class="offset-sm-2 col-sm-10">
-                <input type="submit" class="btn btn-primary" value="спросить">
-            </div>
-        </div>
-
-    </div>
-
-
-
-
+        <button type="submit" class="btn btn-primary">Спросить!</button>
+    </form>
 {% endblock %}
+
+
+{#{% block content %}#}
+{#    <div class="container mt-5">#}
+{#            <h1 class="mb-4">Новый вопрос</h1>#}
+{#        <div class="error mb-3">Нельзя задать вопрос без заголовка!</div>#}
+{#        <div class="mb-3 row">#}
+{#            <label for="title" class="col-sm-2 col-form-label">Заголовок:</label>#}
+{#            <div class="col-sm-10">#}
+{#                <input type="text" class="form-control" id="title" name="title"#}
+{#                       placeholder="Что делать, если в лужу упал, ребята?">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="mb-3 row">#}
+{#            <label for="text" class="col-sm-2 col-form-label">Текст:</label>#}
+{#            <div class="col-sm-10">#}
+{#                <textarea class="form-control" id="text" name="text"#}
+{#                          placeholder="Я реально не знаю, в меня ещё и стреляли :<"></textarea>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="mb-3 row">#}
+{#            <label for="tags" class="col-sm-2 col-form-label">Тэги:</label>#}
+{#            <div class="col-sm-10">#}
+{#                <input type="text" class="form-control" id="tags" name="tags" placeholder="Обэма, дети, лужа">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="mb-3 row">#}
+{#            <div class="offset-sm-2 col-sm-10">#}
+{#                <input type="submit" class="btn btn-primary" value="спросить">#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    #}
+{#{% endblock %}#}

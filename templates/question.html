@@ -1,45 +1,79 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+{% block navbar %}
+
+    {% include 'components/reg-navbar.html' %}
+
+{% endblock %}
+
 {% block content %}
+
+    <h2 class="mb-3 mt-4">Вопрос</h2>
 
     {% include 'components/question-item.html' %}
 
-    <section class="answers mt-5">
-        <h2>Answers</h2>
-        <div class="mb-3 row question">
-            <div class="col-3">
-                <img src="{% static 'img/cat_web.jpg' %}" alt="" class="question-image">
-            </div>
-            <div class="col-9">
-                <div class="question-title">
-                    <a href="{% url 'question' question_id=question.id %}"> {{ question.title }}.</a>
-                </div>
-                <div class="question-text">{{ question.content }}</div>
-            </div>
-            <div class="mt-3 row">
-                <div class="question-likes col-3">
-                    <h4><span class="badge bg-dark">{{ question.likes }}</span> Likes</h4>
-                    <button type="button" class="btn btn-outline-primary btn-sm">Like</button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm">Dislike</button>
-                </div>
-                <div class="form-check col-4">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                    <label class="form-check-label" for="flexCheckChecked">
-                        Верный ответ
-                    </label>
-                </div>
-            </div>
-        </div>
-    </section>
+    <h4 class="mt-4 mb-4">{{ question.answers.count }} Ответов</h4>
 
-    <div>
-        <textarea class="form-control answer-on-question" id="text" name="text"
-                  placeholder="Введите здесь свой ответ"></textarea>
-    </div>
+    {% for answer in page_obj %}
+        {% include 'components/answer-item.html' %}
+    {% endfor %}
 
-    <div class="mt-3 mb-5 row">
-        <div class="col-sm-10">
-            <input type="submit" class="btn btn-primary" value="ответить">
+    {% include 'components/paginator.html' %}
+
+    <form method="post" action="{% url 'question' question.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="answerText" class="form-label">Ваш ответ</label>
+            <textarea class="form-control mb-3" id="answerText" name="answerText" rows="3"
+                      placeholder="Введите здесь свой ответ" required></textarea>
+            <button type="submit" class="btn btn-primary bottom-element">Ответить</button>
         </div>
-    </div>
+    </form>
+    <script>
+        window.onload = function () {
+            if (window.location.hash) {
+                const id = window.location.hash;
+                const element = document.querySelector(id);
+                if (element) element.scrollIntoView();
+            }
+        };
+    </script>
+    {#    <section class="answers mt-5">#}
+    {#        <h2>Answers</h2>#}
+    {#        <div class="mb-3 row question">#}
+    {#            <div class="col-3">#}
+    {#                <img src="{% static 'img/cat_web.jpg' %}" alt="" class="question-image">#}
+    {#            </div>#}
+    {#            <div class="col-9">#}
+    {#                <div class="question-title">#}
+    {#                    <a href="{% url 'question' question_id=question.id %}"> {{ question.title }}.</a>#}
+    {#                </div>#}
+    {#                <div class="question-text">{{ question.content }}</div>#}
+    {#            </div>#}
+    {#            <div class="mt-3 row">#}
+    {#                <div class="question-likes col-3">#}
+    {#                    <h4><span class="badge bg-dark">{{ question.likes }}</span> Likes</h4>#}
+    {#                    <button type="button" class="btn btn-outline-primary btn-sm">Like</button>#}
+    {#                    <button type="button" class="btn btn-outline-secondary btn-sm">Dislike</button>#}
+    {#                </div>#}
+    {#                <div class="form-check col-4">#}
+    {#                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>#}
+    {#                    <label class="form-check-label" for="flexCheckChecked">#}
+    {#                        Верный ответ#}
+    {#                    </label>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </section>#}
+    {##}
+    {#    <div>#}
+    {#        <textarea class="form-control answer-on-question" id="text" name="text"#}
+    {#                  placeholder="Введите здесь свой ответ"></textarea>#}
+    {#    </div>#}
+    {##}
+    {#    <div class="mt-3 mb-5 row">#}
+    {#        <div class="col-sm-10">#}
+    {#            <input type="submit" class="btn btn-primary" value="ответить">#}
+    {#        </div>#}
+    {#    </div>#}
 {% endblock %}
