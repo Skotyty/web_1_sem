@@ -4,9 +4,8 @@ from pyexpat.errors import messages
 from django.contrib import auth
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
-from app.models import Question, Profile, Like, Tag, Answer
+from app.models import Question, Profile, Like, Tag, Answer, LikeManager
 from django.contrib.auth import login, authenticate
 from django.views.decorators.csrf import csrf_protect
 from django.forms import model_to_dict
@@ -14,7 +13,9 @@ from django.urls import reverse
 from app.forms import LoginForm, RegisterForm, SettingsForm, QuestionForm
 from django.contrib import messages
 from django.db.models import Count, Q
-from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import json
 
 # Create your views here.
 QUESTIONS = [
@@ -45,9 +46,20 @@ def paginate(objects, page, per_page=5):
         return paginator.page(paginator.num_pages)
 
 
+# def index(request):
+#     page = request.GET.get('page', 1)
+#     return render(request, 'index.html', {'questions': paginate(QUESTIONS, page)})
+
+@login_required(login_url='login/', redirect_field_name='continue')
 def index(request):
+    questions = Question.objects.recent_questions()[:20].annotate(
+        likes=Count('like', filter=Q(like__value=1)),
+        dislikes=Count('like', filter=Q(like__value=-1))
+    )
     page = request.GET.get('page', 1)
-    return render(request, 'index.html', {'questions': paginate(QUESTIONS, page)})
+    page_obj = paginate(questions, page, per_page=5)
+
+    return render(request, 'new.html', {'page_obj': page_obj})
 
 
 @login_required
@@ -110,30 +122,26 @@ def signup(request):
     elif request.method == 'POST':
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
-            # Создание и сохранение нового пользователя
             user = register_form.save()
-
-            # Создание профиля пользователя
             Profile.objects.create(user=user)
-
-            # Автоматический вход пользователя в систему
             login(request, user)
-
-            # Успешное сообщение
             messages.success(request, 'Successfully signed up and logged in')
-
-            # Редирект на исходную страницу или на главную страницу
             return redirect(request.GET.get('next', reverse('index')))
         else:
-            # Отображение ошибок при неправильной валидации формы
             messages.error(request, 'Registration error')
 
     return render(request, 'signup.html', {'form': register_form})
 
 
-@login_required(login_url='login/', redirect_field_name='continue')
+@csrf_protect
+@login_required(login_url='/login/', redirect_field_name='continue')
 def ask(request):
     if request.method == 'POST':
+        prepopulated_title = request.POST.get('prepopulated_title', None)
+        if prepopulated_title:
+            form = QuestionForm(initial={'title': prepopulated_title})
+            return render(request, 'ask.html', {'form': form})
+
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
@@ -157,7 +165,7 @@ def ask(request):
 
 
 @csrf_protect
-@login_required(login_url='login/', redirect_field_name='continue')
+@login_required(login_url='/login/', redirect_field_name='continue')
 def settings(request):
     if request.method == 'GET':
         settings_form = SettingsForm(initial=model_to_dict(request.user))
@@ -175,7 +183,7 @@ def settings(request):
     return render(request, 'settings.html', context={'form': settings_form})
 
 
-@login_required(login_url='login/', redirect_field_name='continue')
+@login_required(login_url='/login/', redirect_field_name='continue')
 def best(request):
     questions = Question.objects.top_rated_questions().annotate(
         likes=Count('like', filter=Q(like__value=1)),
@@ -187,7 +195,7 @@ def best(request):
     return render(request, 'best.html', {'page_obj': page_obj})
 
 
-@login_required(login_url='login/', redirect_field_name='continue')
+@login_required(login_url='/login/', redirect_field_name='continue')
 def new(request):
     questions = Question.objects.recent_questions()[:20].annotate(
         likes=Count('like', filter=Q(like__value=1)),
@@ -199,7 +207,7 @@ def new(request):
     return render(request, 'new.html', {'page_obj': page_obj})
 
 
-@login_required(login_url='login/', redirect_field_name='continue')
+@login_required(login_url='/login/', redirect_field_name='continue')
 def tag(request, tag_name):
     questions = Question.objects.get_by_tags(tag_name).annotate(
         likes=Count('like', filter=Q(like__value=1)),
@@ -209,3 +217,46 @@ def tag(request, tag_name):
     page_obj = paginate(questions, page)
 
     return render(request, 'tag.html', {'tag': tag_name, 'page_obj': page_obj})
+
+
+@csrf_protect
+@login_required
+def like(request):
+    question_id = request.POST.get('question_id', None)
+    answer_id = request.POST.get('answer_id', None)
+    like_value = int(request.POST.get('like_value', 1))
+
+    if question_id:
+        item = get_object_or_404(Question, pk=question_id)
+        Like.objects.toggle_like(user=request.user, question=item, like_value=like_value)
+        count = Like.objects.calculate_score(item)
+    elif answer_id:
+        item = get_object_or_404(Answer, pk=answer_id)
+        Like.objects.toggle_like(user=request.user, answer=item, like_value=like_value)
+        count = Like.objects.calculate_score(item)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+
+    return JsonResponse({'count': count})
+
+
+@login_required
+@require_POST
+def mark_as_correct(request):
+    data = json.loads(request.body)
+    question_id = data.get('question_id')
+    answer_id = data.get('answer_id')
+    cancel_correct = data.get('cancel_correct', False)
+
+    question = get_object_or_404(Question, pk=question_id, user=request.user)
+
+    if cancel_correct:
+        Answer.objects.filter(question=question, correct=True).update(correct=False)
+        return JsonResponse({'success': 'Correct answer cancelled'})
+
+    answer = get_object_or_404(Answer, pk=answer_id, question=question)
+    Answer.objects.filter(question=question, correct=True).update(correct=False)
+    answer.correct = True
+    answer.save()
+
+    return JsonResponse({'success': 'Answer status changed', 'correct_answer_id': answer.id})

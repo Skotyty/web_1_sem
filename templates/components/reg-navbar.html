@@ -12,16 +12,25 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarCollapse">
-                <form class="d-flex flex-grow-1 me-4">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex flex-grow-1 me-4" action="/ask/" method="POST">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search"
+                           name="prepopulated_title">
                     <button class="btn btn-outline-success" type="submit">Спросить!</button>
                 </form>
+
                 <ul class="navbar-nav">
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{% static 'img/cat_web.jpg' %}" alt="Avatar" style="width: 30px; height: 30px;">
+                            {% if request.user.profile.avatar %}
+                                <img src="{{ request.user.profile.avatar.url }}" alt="Profile Avatar"
+                                     style="width: 30px; height: 30px"/>
+                            {% else %}
+                                <img src="{% static 'img/no_avatar.jpg' %}" alt="Avatar"
+                                     style="width: 30px; height: 30px;">
+                            {% endif %}
                             {{ user.username }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

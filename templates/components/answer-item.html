@@ -1,24 +1,49 @@
 {% load static %}
+{% load custom_filters %}
 
 <div class="card mb-3" id="answer-{{ answer.id }}">
     <div class="row align-items-center g-0">
         <div class="col-3 d-flex flex-column align-items-center">
-            <img src="{% static '/img/cat.jpeg' %}" class="question-image rounded-circle my-3"
-                 style="width: 100px; height: 100px; object-fit: cover;">
-            <div class="likes-dislikes mt-2">
-                <span class="badge bg-success mb-3 ">{{ answer.likes }}</span>
-                <span class="badge bg-danger mb-3">{{ answer.dislikes }}</span>
+            <h4 class="card-title mt-3">{{ answer.user.username }}</h4>
+            <img src="{{ answer.user.profile.avatar|get_avatar }}" class="question-image rounded-circle"
+                 style="width: 100px; height: 100px; object-fit: cover;" alt="Аватар пользователя">
+            <div class="like-section text-center mt-2">
+                <div class="d-flex justify-content-center mb-2">
+                    <button type="button" data-id="{{ answer.id }}" data-type="answer"
+                            class="like-button btn btn-outline-success btn-sm me-1">&#128077;
+                    </button>
+                    <button type="button" data-id="{{ answer.id }}" data-type="answer"
+                            class="dislike-button btn btn-outline-danger btn-sm ms-1">&#128078;
+                    </button>
+                </div>
+                <div>
+                    <span id="like-counter-answer-{{ answer.id }}" class="rating">{{ answer.likes }}</span>
+                </div>
             </div>
         </div>
         <div class="col-9">
-            <div class="card-body">
-                <p class="card-text">{{ answer.text }}</p>
+            <div class="card-body d-flex flex-column">
+                <p class="card-text mb-auto">{{ answer.text }}</p>
                 {% if answer.correct %}
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="correctAnswer{{ answer.id }}" checked
                                disabled>
                         <label class="form-check-label" for="correctAnswer{{ answer.id }}">Правильный ответ!</label>
                     </div>
+                {% endif %}
+            </div>
+            <div class="mt-2 d-flex justify-content-end me-3">
+                {% if user.is_authenticated and user == answer.question.user %}
+                    <button type="button" class="mark-correct-btn btn btn-primary btn-sm mb-2"
+                            data-question-id="{{ answer.question.id }}" data-answer-id="{{ answer.id }}"
+                            {% if answer.correct %}style="display: none;"{% endif %}>
+                        Отметить правильным
+                    </button>
+                    <button type="button" class="cancel-correct-btn btn btn-secondary btn-sm mb-2"
+                            data-question-id="{{ answer.question.id }}" data-answer-id="{{ answer.id }}"
+                            {% if not answer.correct %}style="display: none;"{% endif %}>
+                        Отменить выбор
+                    </button>
                 {% endif %}
             </div>
         </div>

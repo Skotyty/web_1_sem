@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app import views
-from django.contrib.auth.views import LogoutView
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -31,4 +32,8 @@ urlpatterns = [
     path('new/', views.new, name='new'),
     path('tag/<str:tag_name>/', views.tag, name='tag'),
     path('logout/', views.logout, name='logout'),
+    path('like/', views.like, name='like'),
+    path('mark-correct/', views.mark_as_correct, name='mark-correct'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

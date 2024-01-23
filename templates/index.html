@@ -11,11 +11,16 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="mt-2"> {{ p1 }} Новые вопросы</h1>
+    {% csrf_token %}
+    
+    <div class="d-flex align-items-center mt-4">
+        <h1 class="me-3 mb-0">{{ p1 }} Новые вопросы</h1>
+        <a href="{% url 'best' %}" class="btn btn-dark btn-sm text-white">Лучшие вопросы</a>
+    </div>
 
     {% for question in questions %}
         {% include 'components/question-item.html' %}
     {% endfor %}
-    
+
     {% include 'components/paginator.html' %}
 {% endblock %}

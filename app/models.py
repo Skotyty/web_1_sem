@@ -10,7 +10,7 @@ class ProfileManager(models.Manager):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to="static/img", null=True, blank=True, default="cat_web.jpg")
+    avatar = models.ImageField(upload_to="avatars/", null=True, blank=True, default="avatar.jpg")
     objects = ProfileManager()
 
     def __str__(self):
@@ -21,6 +21,7 @@ class Tag(models.Model):
     name = models.CharField(max_length=30, unique=True, db_index=True)
     rating = models.IntegerField(null=True, default=0, db_index=True)
     description = models.TextField(null=True, blank=True)
+
     class Meta:
         managed = True
         db_table = 'Tag'
@@ -30,21 +31,29 @@ class Tag(models.Model):
 
 
 class LikeManager(models.Manager):
-    def adjust_vote(self, user, question=None, answer=None, like_value=0):
-        like, created = self.get_or_create(
-            user=user, question=question, answer=answer,
-            defaults={'value': like_value}
-        )
-        if not created and like.value != like_value:
-            like.value = like_value
-            like.save()
-        return like
 
-    def calculate_score(self, question):
-        likes = self.filter(question=question, value=1).count()
-        dislikes = self.filter(question=question, value=-1).count()
+    def toggle_like(self, user, question=None, answer=None, like_value=1):
+        existing_like = self.filter(user=user, question=question, answer=answer).first()
+
+        if existing_like:
+            if existing_like.value != like_value:
+                existing_like.value = like_value
+                existing_like.save()
+            else:
+                existing_like.delete()
+        else:
+            self.create(user=user, question=question, answer=answer, value=like_value)
+
+    def calculate_score(self, item):
+        if isinstance(item, Question):
+            likes = self.filter(question=item, value=1).count()
+            dislikes = self.filter(question=item, value=-1).count()
+        elif isinstance(item, Answer):
+            likes = self.filter(answer=item, value=1).count()
+            dislikes = self.filter(answer=item, value=-1).count()
+        else:
+            return 0
         return likes - dislikes
-
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -72,6 +81,8 @@ class QuestionManager(models.Manager):
         ).filter(
             total_votes__gt=0
         ).order_by('-total_votes')[:20]
+
+
 class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)

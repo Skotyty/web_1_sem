@@ -44,7 +44,7 @@ class SettingsForm(forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
-    tags = forms.CharField(required=False)  # Дополнительное поле для тегов
+    tags = forms.CharField(required=False)
 
     class Meta:
         model = Question
